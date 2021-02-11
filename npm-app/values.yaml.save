@@ -1,0 +1,21 @@
+deployment:
+   name: npm-dev
+   replicas: 2
+   maxUnavailable: 2
+   image:
+     username: blancahot
+     registry: npm-demo-app
+     tag: 80
+
+
+service:
+  name: my-service
+  type: LoadBalancer
+  port: 80
+  targetPort: 3000
+
+ingress:
+  name: my-ingress
+  annotations:
+   
+  path: /dev

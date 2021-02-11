@@ -1,0 +1,28 @@
+{{- if .Values.serviceaccount.enabled -}}
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: {{ .Release.Mamespace }}
+  name: {{.Chart.Name}}-{{.Values.role.name}}
+rules:
+- apiGroups: ["", "extensions", "apps"]
+  resources: ["deployments", "replicasets", "pods", "services","ingresses","secrets"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete","apply"]
+- apiGroups: ["autoscaling"]
+  resources: ["horizontalpodautoscalers"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete","apply"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{.Chart.Name}}-{{.Values.rolebinding.name}}
+  namespace: {{ .Release.Mamespace }}
+subjects:
+- kind: Group
+  name: system:serviceaccounts
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: {{.Chart.Name}}-{{.Values.role.name}}
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}

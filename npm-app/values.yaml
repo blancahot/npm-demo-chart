@@ -1,0 +1,39 @@
+deployment:
+   name: my-deployment
+   replicas: 2
+   maxUnavailable: 2
+   image:
+     username: blancahot
+     registry: npm-demo-app
+     tag: 81
+
+service:
+  name: my-service
+  type: LoadBalancer
+  port: 80
+  targetPort: 3000
+
+ingress:
+  name: my-ingress
+  annotations:
+    target: /
+  path: /
+
+hpa:
+  name: my-hpa
+  enabled: true
+  maxReplicas: 10
+  # average total CPU usage per pod (1-100)
+  cpu: 80
+  # average memory usage per pod (100Mi-1Gi)
+  memory: 300Mi
+
+serviceaccount:
+  name: my-sa
+  enabled: false
+
+role:
+  name: my-role
+
+rolebinding:
+  name: my-rolebinding
